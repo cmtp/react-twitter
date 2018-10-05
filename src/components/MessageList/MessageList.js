@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Message from "../Message/Message";
-import styles from './MessageList.module.css';
+import styles from "./MessageList.module.css";
 
 class MessageList extends Component {
   render() {
@@ -9,6 +9,7 @@ class MessageList extends Component {
         {this.props.messages.map(msg => {
           return (
             <Message
+              key={msg.id}
               text={msg.text}
               picture={msg.picture}
               displayName={msg.displayName}
