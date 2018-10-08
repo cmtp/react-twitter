@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { HashRouter as Router, Route } from "react-router-dom";
+import firebase from 'firebase';
 
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
@@ -14,19 +15,30 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      user: {
-        photoURL: "https://randomuser.me/api/portraits/men/16.jpg",
-        email: "jperez@mailnesia.com",
-        displayName: "Juan Perez",
-        location: "Cochabamba"
-      }
+      user: undefined
     };
 
     this.handleOnAuth = this.handleOnAuth.bind(this);
   }
 
+  componentWillMount() {
+      firebase.auth().onAuthStateChanged( user => {
+          if( user ) {
+              this.setState({
+                  user
+              })
+          } else {
+              this.setState({ user: undefined })
+          }
+      })
+  }
+
   handleOnAuth() {
-    console.log('Auth');
+    const provider = new firebase.auth.GithubAuthProvider();
+
+    firebase.auth().signInWithPopup(provider)
+        .then( result => console.log(`${result.user.email} ha iniciado sesion`))
+        .catch( error => console.log(`Error ${error.code}: ${error.message}`));
   }
 
   render() {
