@@ -8,7 +8,13 @@ class InputText extends Component {
   render() {
     return (
       <form className={styles.form} onSubmit={this.props.onSendText}>
-        <textarea className={styles.text} name="text" />
+        <textarea
+          className={styles.text}
+          name="text"
+          defaultValue={
+            this.props.userNameToReply ? `@${this.props.userNameToReply}` : ""
+          }
+        />
         <div className={styles.buttons}>
           <button className={styles.close} onClick={this.props.onCloseText}>
             Cerrar
