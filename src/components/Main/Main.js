@@ -44,8 +44,6 @@ class Main extends Component {
       text: event.target.text.value
     };
 
-    console.log(newMessage);
-
     this.setState({
       messages: this.state.messages.concat(newMessage),
       openText: false
