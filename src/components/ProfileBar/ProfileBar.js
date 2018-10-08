@@ -1,7 +1,15 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
+
 import { Link } from 'react-router-dom';
 
 import styles from "./ProfileBar.module.css";
+
+const propTypes = {
+    picture: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    onOpenText: PropTypes.func.isRequired
+}
 
 class ProfileBar extends Component {
   constructor(props) {
@@ -24,5 +32,7 @@ class ProfileBar extends Component {
     );
   }
 }
+
+ProfileBar.propTypes = propTypes;
 
 export default ProfileBar;

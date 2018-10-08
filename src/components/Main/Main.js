@@ -1,8 +1,14 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import MessageList from "../MessageList/MessageList";
 import InputText from "../InputText/InputText";
 import ProfileBar from "../ProfileBar/ProfileBar";
 import uuid from "uuid";
+
+const propTypes = {
+  user: PropTypes.object.isRequired
+};
 
 class Main extends Component {
   constructor(props) {
@@ -59,7 +65,7 @@ class Main extends Component {
     this.setState({
       messages: this.state.messages.concat(newMessage),
       openText: false,
-        userNameToReply: ''
+      userNameToReply: ""
     });
   }
 
@@ -148,5 +154,7 @@ class Main extends Component {
     );
   }
 }
+
+Main.propTypes = propTypes;
 
 export default Main;
