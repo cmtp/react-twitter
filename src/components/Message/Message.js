@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
 import styles from "./Message.module.css";
 import moment from "moment";
 
@@ -31,17 +33,20 @@ class Message extends Component {
 
   render() {
     let dateFormat = moment(this.props.date).fromNow();
+    let userLink = `/user/${this.props.username}`;
 
     return (
       <div className={styles.root}>
         <div className={styles.user}>
-          <figure>
-            <img
-              className={styles.avatar}
-              src={this.props.picture}
-              alt="avatar"
-            />
-          </figure>
+          <Link to={userLink}>
+            <figure>
+              <img
+                className={styles.avatar}
+                src={this.props.picture}
+                alt="avatar"
+              />
+            </figure>
+          </Link>
           <span className={styles.displayName}>{this.props.displayName}</span>
           <span className={styles.username}>{this.props.username}</span>
           <span className={styles.date}>{dateFormat}</span>
@@ -51,11 +56,17 @@ class Message extends Component {
           <div className={styles.icon} onClick={this.props.onReplyTweet}>
             <span className="fa fa-reply" />
           </div>
-          <div className={(this.state.pressRetweet) ? styles.rtGreen: ''} onClick={this.onPressRetweet}>
+          <div
+            className={this.state.pressRetweet ? styles.rtGreen : ""}
+            onClick={this.onPressRetweet}
+          >
             <span className="fa fa-retweet" />
             <span className={styles.num}>{this.props.numRetweets}</span>
           </div>
-          <div className={(this.state.pressFavorite) ? styles.favYellow: ''} onClick={this.onPressFavorite}>
+          <div
+            className={this.state.pressFavorite ? styles.favYellow : ""}
+            onClick={this.onPressFavorite}
+          >
             <span className="fa fa-star" />
             <span className={styles.num}>{this.props.numFavorites}</span>
           </div>
