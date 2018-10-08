@@ -37,11 +37,19 @@ class Main extends Component {
     event.preventDefault();
     let newMessage = {
       id: uuid.v4(),
-        username: this.props.username,
-        displayName: this.props.user.displayName,
-        date: Date.now(),
-        text: event.target.text.value()
-    }
+      username: this.props.user.email.split("@")[0],
+      displayName: this.props.user.displayName,
+      picture: this.props.user.photoURL,
+      date: Date.now(),
+      text: event.target.text.value
+    };
+
+    console.log(newMessage);
+
+    this.setState({
+      messages: this.state.messages.concat(newMessage),
+      openText: false
+    });
   }
 
   handleCloseText(event) {
@@ -56,11 +64,11 @@ class Main extends Component {
 
   renderOpenText() {
     if (this.state.openText) {
-      return(
-          <InputText
-            onSendText={this.handleSendText.bind(this)}
-            onCloseText={this.handleCloseText.bind(this)}
-          />
+      return (
+        <InputText
+          onSendText={this.handleSendText}
+          onCloseText={this.handleCloseText}
+        />
       );
     }
   }
@@ -71,7 +79,7 @@ class Main extends Component {
         <ProfileBar
           picture={this.props.user.photoURL}
           username={this.props.user.email.split("@")[0]}
-          onOpenText={this.handleOpenText.bind(this)}
+          onOpenText={this.handleOpenText}
         />
         {this.renderOpenText()}
         <MessageList messages={this.state.messages} />

@@ -17,7 +17,7 @@ class MessageList extends Component {
               date={msg.date}
             />
           );
-        })}
+        }).reverse()}
       </div>
     );
   }

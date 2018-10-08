@@ -7,20 +7,21 @@ import "normalize-css";
 import "./App.css";
 
 class App extends Component {
-    constructor() {
-        super();
-        this.state = {
-            user: {
-                photoURL: 'https://randomuser.me/api/portraits/men/16.jpg',
-                email: 'cazaustre@mailnesia.com'
-            }
-        }
-    }
+  constructor() {
+    super();
+    this.state = {
+      user: {
+        photoURL: "https://randomuser.me/api/portraits/men/16.jpg",
+        email: "jperez@mailnesia.com",
+        displayName: "Juan Perez"
+      }
+    };
+  }
   render() {
     return (
       <div className="App">
         <Header />
-        <Main user={this.state.user}/>
+        <Main user={this.state.user} />
       </div>
     );
   }
