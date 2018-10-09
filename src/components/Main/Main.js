@@ -7,7 +7,8 @@ import ProfileBar from "../ProfileBar/ProfileBar";
 import uuid from "uuid";
 
 const propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  onLogout: PropTypes.func.isRequired
 };
 
 class Main extends Component {
@@ -142,6 +143,7 @@ class Main extends Component {
           picture={this.props.user.photoURL}
           username={this.props.user.email.split("@")[0]}
           onOpenText={this.handleOpenText}
+          onLogout={this.props.onLogout}
         />
         {this.renderOpenText()}
         <MessageList
