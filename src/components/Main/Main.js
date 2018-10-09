@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import firebase from "firebase";
 
 import MessageList from "../MessageList/MessageList";
 import InputText from "../InputText/InputText";
@@ -19,28 +20,7 @@ class Main extends Component {
       user: Object.assign({}, this.props.user, { retweets: [], favorites: [] }),
       openText: false,
       userNameToReply: "",
-      messages: [
-        {
-          id: uuid.v4(),
-          text: "Mensaje de prueba",
-          picture: "https://randomuser.me/api/portraits/men/16.jpg",
-          displayName: "Christian Tola",
-          username: "ctola",
-          date: Date.now() - 180000,
-          retweets: 0,
-          favorites: 0
-        },
-        {
-          id: uuid.v4(),
-          text: "Este es un nuevo mensaje",
-          picture: "https://randomuser.me/api/portraits/men/16.jpg",
-          displayName: "Christian Tola",
-          username: "ctola",
-          date: Date.now() - 1800000,
-          retweets: 0,
-          favorites: 0
-        }
-      ]
+      messages: []
     };
     this.handleSendText = this.handleSendText.bind(this);
     this.handleCloseText = this.handleCloseText.bind(this);
@@ -48,6 +28,21 @@ class Main extends Component {
     this.handleRetweet = this.handleRetweet.bind(this);
     this.handleFavorite = this.handleFavorite.bind(this);
     this.handleReplyTweet = this.handleReplyTweet.bind(this);
+  }
+
+  componentWillMount() {
+    const messagesRef = firebase
+      .database()
+      .ref()
+      .child("messages");
+
+    messagesRef.on("child_added", snapshot => {
+      this.setState({
+        messages: this.state.messages.concat(snapshot.val()),
+        openText: false,
+        userNameToReply: ""
+      });
+    });
   }
 
   handleSendText(event) {
@@ -59,15 +54,16 @@ class Main extends Component {
       picture: this.props.user.photoURL,
       date: Date.now(),
       text: event.target.text.value,
-      retweets: [],
-      favorites: []
+      favorites: 0,
+      retweets: 0
     };
 
-    this.setState({
-      messages: this.state.messages.concat(newMessage),
-      openText: false,
-      userNameToReply: ""
-    });
+    const messageRef = firebase
+      .database()
+      .ref()
+      .child("messages");
+    const messageID = messageRef.push();
+    messageID.set(newMessage);
   }
 
   handleCloseText(event) {
@@ -84,7 +80,7 @@ class Main extends Component {
     let alreadyRetweeted = this.state.user.retweets.filter(rt => rt === msgId);
     if (alreadyRetweeted.length === 0) {
       let messages = this.state.messages.map(msg => {
-        if (msg.id === 0) {
+        if (msg.id === msgId) {
           msg.retweets++;
         }
         return msg;
@@ -104,7 +100,9 @@ class Main extends Component {
     );
     if (alreadyFavorited.length === 0) {
       let messages = this.state.messages.map(msg => {
-        if (msg.id === msgId) msg.favorites++;
+        if (msg.id === msgId) {
+          msg.favorites++;
+        }
         return msg;
       });
       let user = Object.assign({}, this.state.user);
